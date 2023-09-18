@@ -1,0 +1,260 @@
+# import os
+# import cv2
+# import numpy as np
+# from flask import Flask, request, render_template
+# from keras.models import load_model
+# from image_processing import preprocess, num_to_label
+# import tensorflow as tf
+
+
+# # Load the saved .h5 model
+# saved_model_path = "C:\\Users\\nigam\\Downloads\\saved_hdf5_model.h5"
+# model = load_model(saved_model_path, compile=False)  # Disable model compilation
+# print("Model loaded successfully.")
+
+# app = Flask(__name__)
+# imgSize = (128, 32)  # Specify the desired image size
+
+
+# @app.route("/")
+# def index():
+#     print("Predicted Label:", predicted_label)
+#     return render_template("index.html", prediction=predicted_label)
+
+
+# @app.route("/predict", methods=["POST"])
+# def predict():
+#     try:
+#         # Get the uploaded image file
+#         image_file = request.files["image"]
+
+#         if image_file:
+#             # Read the image
+#             image = cv2.imdecode(
+#                 np.frombuffer(image_file.read(), np.uint8), cv2.IMREAD_GRAYSCALE
+#             )
+
+#             # Preprocess the image
+#             preprocessed_image = preprocess(image, imgSize)
+
+#             # Predict using the loaded model
+#             pred = model.predict(preprocessed_image.reshape(1, 128, 32, 1))
+
+#             # Decode predictions and convert to labels
+#             decoded = tf.keras.backend.get_value(
+#                 tf.keras.backend.ctc_decode(
+#                     pred,
+#                     input_length=np.ones(pred.shape[0]) * pred.shape[1],
+#                     greedy=True,
+#                 )[0][0]
+#             )
+#             predicted_label = num_to_label(decoded[0])
+
+#             return render_template("index.html", prediction=predicted_label)
+
+#         else:
+#             return render_template("index.html", prediction="No image file received")
+
+#     except Exception as e:
+#         return render_template("index.html", prediction=f"Error: {str(e)}")
+
+
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5000, debug=True)
+
+
+# import os
+# import cv2
+# import numpy as np
+# from flask import Flask, request, render_template
+# from keras.models import load_model
+# import tensorflow as tf
+
+# # Import your preprocessing and num_to_label functions
+# from image_processing import preprocess, num_to_label
+
+# # Load the saved .h5 model
+# saved_model_path = "C:\\Users\\nigam\\Downloads\\saved_hdf5_model.h5"
+# model = load_model(saved_model_path, compile=False)  # Disable model compilation
+# print("Model loaded successfully.")
+
+# app = Flask(__name__)
+# imgSize = (128, 32)  # Specify the desired image size
+
+
+# # @app.route("/")
+# # def index():
+# #     predicted_label = "No prediction available"  # Default value
+# #     print("Predicted Label:", predicted_label)
+# #     return render_template("index.html", prediction=predicted_label)
+
+
+# @app.route("/")
+# def index():
+#     # Initialize predicted_label with an empty string
+#     predicted_label = ""
+#     print("Predicted Label:", predicted_label)
+#     return render_template("index.html", prediction=predicted_label)
+
+
+# @app.route("/predict", methods=["POST"])
+# def predict():
+#     try:
+#         # Get the uploaded image file
+#         image_file = request.files["image"]
+
+#         if image_file:
+#             # Print a message to confirm that the image file is received
+#             print("Image file received")
+
+#             # Read the image
+#             image = cv2.imdecode(
+#                 np.frombuffer(image_file.read(), np.uint8), cv2.IMREAD_GRAYSCALE
+#             )
+
+#             # Preprocess the image
+#             preprocessed_image = preprocess(image, imgSize)
+
+#             # Predict using the loaded model
+#             pred = model.predict(preprocessed_image.reshape(1, 128, 32, 1))
+#             print("Prediction made")
+
+#             # Decode predictions and convert to labels
+#             decoded = tf.keras.backend.get_value(
+#                 tf.keras.backend.ctc_decode(
+#                     pred,
+#                     input_length=np.ones(pred.shape[0]) * pred.shape[1],
+#                     greedy=True,
+#                 )[0][0]
+#             )
+#             predicted_label = num_to_label(decoded[0])
+#             print("Predicted label:", predicted_label)
+
+#             # Pass the prediction to the HTML template
+#             return render_template("index.html", prediction=predicted_label)
+
+#         else:
+#             return render_template("index.html", prediction="No image file received")
+
+#     except Exception as e:
+#         return render_template("index.html", prediction=f"Error: {str(e)}")
+
+
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5000, debug=True)
+
+
+import os
+import cv2
+import numpy as np
+from flask import Flask, request, render_template
+from keras.models import load_model
+import tensorflow as tf
+
+app = Flask(__name__)
+imgSize = (128, 32)  # Specify the desired image size
+
+# Load the saved .h5 model
+saved_model_path = "C:\\Users\\nigam\\Downloads\\saved_hdf5_model.h5"
+model = load_model(saved_model_path, compile=False)  # Disable model compilation
+print("Model loaded successfully.")
+
+alphabets = "0123456789' "
+max_str_len = 10  # max length of input labels
+num_of_characters = len(alphabets) + 1  # +1 for ctc pseudo blank
+
+
+# Preprocessing function
+def preprocess(img, imgSize):
+    """resize, transpose, and standardization of grayscale images"""
+    # create a target image and copy the sample image into it
+    widthTarget, heightTarget = imgSize
+    height, width = img.shape
+    factor_x = width / widthTarget
+    factor_y = height / heightTarget
+
+    factor = max(factor_x, factor_y)
+    # scale according to factor
+    newSize = (
+        min(widthTarget, int(width / factor)),
+        min(heightTarget, int(height / factor)),
+    )
+
+    img = cv2.resize(img, newSize)
+    target = np.ones(shape=(heightTarget, widthTarget), dtype="uint8") * 255
+    target[0 : newSize[1], 0 : newSize[0]] = img
+    # transpose
+    img = cv2.transpose(target)
+    # standardization
+    mean, stddev = cv2.meanStdDev(img)
+    mean = mean[0][0]
+    stddev = stddev[0][0]
+    img = img - mean
+    img = img // stddev if stddev > 0 else img
+    return img
+
+
+# Label conversion functions
+def label_to_num(label):
+    label_num = []
+    for ch in label:
+        label_num.append(alphabets.find(ch))
+    return np.array(label_num)
+
+
+def num_to_label(num):
+    ret = ""
+    for ch in num:
+        if ch == -1:  # CTC Blank
+            break
+        else:
+            ret += alphabets[ch]
+    return ret
+
+
+@app.route("/")
+def index():
+    return render_template("index.html", prediction="")
+
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    try:
+        # Get the uploaded image file
+        image_file = request.files["image"]
+
+        if image_file:
+            # Read the image
+            image = cv2.imdecode(
+                np.frombuffer(image_file.read(), np.uint8), cv2.IMREAD_GRAYSCALE
+            )
+
+            # Preprocess the image
+            preprocessed_image = preprocess(image, imgSize)
+
+            # Predict using the loaded model
+            pred = model.predict(preprocessed_image.reshape(1, 128, 32, 1))
+
+            # Decode predictions and convert to labels
+            decoded = tf.keras.backend.get_value(
+                tf.keras.backend.ctc_decode(
+                    pred,
+                    input_length=np.ones(pred.shape[0]) * pred.shape[1],
+                    greedy=True,
+                )[0][0]
+            )
+            predicted_label = num_to_label(decoded[0])
+
+            # Return the prediction as a JSON response
+            return {"prediction": predicted_label}
+
+        else:
+            return {"prediction": "No image file received"}
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return render_template("index.html", prediction=f"Error: {str(e)}")
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)

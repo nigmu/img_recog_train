@@ -1,0 +1,276 @@
+@import url('https://fonts.googleapis.com/css2?family=Mooli&display=swap');
+body{
+  font-family: 'Mooli', sans-serif;
+overflow-x: hidden;
+
+}.s1{
+    /* height:40%; */
+    /* margin: 5 10 10 5; */
+    width:100%;
+}
+.s1 img{
+    height:95%;
+}
+.navbar-scroll .nav-link,
+.navbar-scroll .navbar-toggler-icon,
+.navbar-scroll .navbar-brand {
+  color: #fff;
+  
+}
+.top{
+  position: fixed;
+}
+nav{
+
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+}
+
+.container
+{
+  margin-top:0px;
+  height:72px;
+  margin-left: 0;
+  width: 100%;
+}
+#soa
+{
+  
+position: relative;
+height: 109px;
+border-radius: 50%;
+margin-right: 50px;
+
+}
+#suii
+{
+margin-right: 0px;
+}
+.ok
+{
+font-size: 20px;
+padding-left: 50px;
+padding-right: 20px;
+float: right;
+margin-left: 500px;
+}
+.sub-container{
+  margin:0;
+}
+.abt{
+     margin-right:0 ;
+     float:left;
+}
+.abot{
+  margin-left: 10px;
+  width: 100%;
+  margin-top: 20px;
+  align-content: center;
+  height: 300px;
+}
+
+.img-abt{
+  /* float:right */
+margin-left: 900px;
+}
+.lead{
+  margin-left:50px ;
+}
+
+.abt-txt{
+  width: 75%;
+  text-align: left;
+}
+.f-part{
+  margin-top: 20px;
+}
+.faq{margin-top: 0px;}
+.faq-heading{
+  text-align: center;
+  padding: 20px 60px;
+  font-family: 'Mooli', sans-serif;
+  
+  /* background-color: beige; */
+}
+.faq-container{
+display: block;
+justify-content: center;
+flex-direction: column;
+
+}
+@media (max-width:630px){
+  
+  .faq{
+    display: block;
+    margin-top:100px;
+  }
+
+}
+.hr-line{
+width: 60%;
+margin: auto;
+color: black;
+}
+/* Style the buttons that are used to open and close the faq-page body */
+.faq-page {
+  /* background-color: #eee; */
+  color: black;
+  cursor: pointer;
+  padding: 30px 20px;
+  width: 60%;
+  border: none;
+  outline: none;
+  transition: 0.005s;
+  margin: auto;
+
+}
+.faq-body{
+  margin: auto;
+  /* text-align: center; */
+ width: 50%; 
+ padding: auto;
+ 
+}
+
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active,
+.faq-page:hover {
+  background-color: #F9F9F9;
+}
+
+/* Style the faq-page panel. Note: hidden by default */
+.faq-body {
+  padding: 0 18px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+}
+
+.faq-page:after {
+  content: '\02795';
+  /* Unicode character for "plus" sign (+) */
+  font-size: 13px;
+  color: #777;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2796";
+  /* Unicode character for "minus" sign (-) */
+}
+.faq{
+  margin-top: 28%;
+}
+
+.container-c {
+  background-color: white;
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 400px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+}
+
+input, textarea {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.c-button {
+  background-color: #ff0000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.c-button:hover {
+  background-color: #cc0000;
+}
+.contact-me{
+      margin-top: 40px;
+      background: url(../images/bg.jpg);
+      height: 600px;
+}
+/* #home{
+  height: 900px;
+
+} */
+
+
+
+.footer{
+  background:#000;
+  padding:30px 0px;
+  font-family: 'Play', sans-serif;
+  text-align:center;
+  }
+  
+  .footer .row{
+  width:100%;
+  margin:1% 0%;
+  padding:0.6% 0%;
+  color:gray;
+  font-size:0.8em;
+  }
+  
+  .footer .row a{
+  text-decoration:none;
+  color:gray;
+  transition:0.5s;
+  }
+  
+  .footer .row a:hover{
+  color:#fff;
+  }
+  
+  .footer .row ul{
+  width:100%;
+  }
+  
+  .footer .row ul li{
+  display:inline-block;
+  margin:0px 30px;
+  }
+  
+  .footer .row a i{
+  font-size:2em;
+  margin:0% 1%;
+  }
+  
+  @media (max-width:720px){
+  .footer{
+  text-align:left;
+  padding:5%;
+  }
+  .footer .row ul li{
+  display:block;
+  margin:10px 0px;
+  text-align:left;
+  }
+  .footer .row a i{
+  margin:0% 3%;
+  }
+  }
+
+  .active:after {
+    content: "";
+}
+/* .cont-contain{
+
+  margin-top: 30%;
+} */
